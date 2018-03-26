@@ -1,0 +1,10 @@
+/home/jarriott/Documents/ProductWebAPI/bin/Debug/netcoreapp2.0/ProductWebAPI.deps.json
+/home/jarriott/Documents/ProductWebAPI/bin/Debug/netcoreapp2.0/ProductWebAPI.runtimeconfig.json
+/home/jarriott/Documents/ProductWebAPI/bin/Debug/netcoreapp2.0/ProductWebAPI.runtimeconfig.dev.json
+/home/jarriott/Documents/ProductWebAPI/bin/Debug/netcoreapp2.0/ProductWebAPI.dll
+/home/jarriott/Documents/ProductWebAPI/bin/Debug/netcoreapp2.0/ProductWebAPI.pdb
+/home/jarriott/Documents/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.csproj.CoreCompileInputs.cache
+/home/jarriott/Documents/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.AssemblyInfoInputs.cache
+/home/jarriott/Documents/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.AssemblyInfo.cs
+/home/jarriott/Documents/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.dll
+/home/jarriott/Documents/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.pdb
