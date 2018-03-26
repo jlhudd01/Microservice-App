@@ -12690,11 +12690,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/jarriott/Documents/ProductWebAPI/ProductWebAPI.csproj",
+      "projectUniqueName": "/home/jarriott/Documents/Microservice app/ProductWebAPI/ProductWebAPI.csproj",
       "projectName": "ProductWebAPI",
-      "projectPath": "/home/jarriott/Documents/ProductWebAPI/ProductWebAPI.csproj",
+      "projectPath": "/home/jarriott/Documents/Microservice app/ProductWebAPI/ProductWebAPI.csproj",
       "packagesPath": "/home/jarriott/.nuget/packages/",
-      "outputPath": "/home/jarriott/Documents/ProductWebAPI/obj/",
+      "outputPath": "/home/jarriott/Documents/Microservice app/ProductWebAPI/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"

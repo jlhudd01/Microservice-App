@@ -8,3 +8,13 @@
 /home/jarriott/Documents/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.AssemblyInfo.cs
 /home/jarriott/Documents/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.dll
 /home/jarriott/Documents/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.pdb
+/home/jarriott/Documents/Microservice app/OrderWebAPI/bin/Debug/netcoreapp2.0/OrderWebAPI.deps.json
+/home/jarriott/Documents/Microservice app/OrderWebAPI/bin/Debug/netcoreapp2.0/OrderWebAPI.runtimeconfig.json
+/home/jarriott/Documents/Microservice app/OrderWebAPI/bin/Debug/netcoreapp2.0/OrderWebAPI.runtimeconfig.dev.json
+/home/jarriott/Documents/Microservice app/OrderWebAPI/bin/Debug/netcoreapp2.0/OrderWebAPI.dll
+/home/jarriott/Documents/Microservice app/OrderWebAPI/bin/Debug/netcoreapp2.0/OrderWebAPI.pdb
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.csproj.CoreCompileInputs.cache
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.AssemblyInfoInputs.cache
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.AssemblyInfo.cs
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.dll
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.pdb
