@@ -24,5 +24,11 @@ namespace ProductWebAPI.Models
             var updateProductDomainEvent = new ProductUpdateDomainEvent(this);
             AddDomainEvent(updateProductDomainEvent);
         }
+
+        public void RemoveProduct()
+        {
+            var deleteProductDomainEvent = new ProductDeleteDomainEvent(this);
+            AddDomainEvent(deleteProductDomainEvent);
+        }
     }
 }

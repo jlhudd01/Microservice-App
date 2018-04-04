@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Options;
 using ProductWebAPI.Contexts;
 using ProductWebAPI.Infrastructure;
 using ProductWebAPI.IntegrationEvents;
+using ProductWebAPI.LogService;
 using ProductWebAPI.Models;
 using ProductWebAPI.RabbitMQ;
 using RabbitMQ.Client;
@@ -32,7 +34,10 @@ namespace ProductWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductList"));
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<ProductContext>(opt => opt.UseSqlite("DataSource=database.db"), ServiceLifetime.Scoped);
+                services.AddEntityFrameworkSqlite()
+                .AddDbContext<IntegrationEventLogContext>(opt => opt.UseSqlite("DataSource=database.db"), ServiceLifetime.Scoped);
             services.AddMvc();
             services.AddCors(options =>
             {
@@ -41,6 +46,8 @@ namespace ProductWebAPI
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
+
+            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             services.AddTransient<IProductsIntegrationEventService, ProductsIntegrationEventService>();
 
@@ -75,7 +82,9 @@ namespace ProductWebAPI
             }
 
             var context = app.ApplicationServices.GetService<ProductContext>();
+            var context2 = app.ApplicationServices.GetService<IntegrationEventLogContext>();
             SeedProductDatabase(context);
+            DeleteEventLogDatabase(context2);
 
             app.UseCors("CorsPolicy");
             app.UseMvc();
@@ -105,6 +114,9 @@ namespace ProductWebAPI
 
         private static void SeedProductDatabase(ProductContext context)
         {
+            context.Database.ExecuteSqlCommand("DELETE FROM [Products]");
+            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='Products'");
+            context.SaveChanges();
             var products = new List<Product>()
             {
                 new Product("Product 1", 1.03m),
@@ -113,6 +125,12 @@ namespace ProductWebAPI
             };
             context.Products.AddRange(products);
 
+            context.SaveChanges();
+        }
+
+        private static void DeleteEventLogDatabase(IntegrationEventLogContext context)
+        {
+            context.Database.ExecuteSqlCommand("DELETE FROM [IntegrationEventLog]");
             context.SaveChanges();
         }
     }

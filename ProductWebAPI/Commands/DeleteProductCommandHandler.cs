@@ -19,7 +19,8 @@ namespace ProductWebAPI.Commands
 
         public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new Product(request.Name, request.Price, request.Id);
+            var product = _productRepository.GetProduct(request.Id);
+            product.RemoveProduct();
 
             _productRepository.Delete(product);
 

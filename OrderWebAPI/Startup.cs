@@ -89,6 +89,7 @@ namespace OrderWebAPI
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
             eventBus.Subscribe<ProductUpdateIntegrationEvent, IIntegrationEventHandler<ProductUpdateIntegrationEvent>>();
+            eventBus.Subscribe<ProductDeleteIntegrationEvent, IIntegrationEventHandler<ProductDeleteIntegrationEvent>>();
         }
 
         private void RegisterEventBus(IServiceCollection services)

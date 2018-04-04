@@ -5,6 +5,6 @@ namespace ProductWebAPI.IntegrationEvents
 {
     public interface IProductsIntegrationEventService
     {
-         void PublishThroughEventBus(IntegrationEvent integrationEvent);
+         Task PublishThroughEventBus(IntegrationEvent integrationEvent);
     }
 }
