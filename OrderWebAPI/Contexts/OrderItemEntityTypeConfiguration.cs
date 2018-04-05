@@ -8,6 +8,8 @@ namespace OrderWebAPI.Contexts
     {
         public void Configure(EntityTypeBuilder<OrderItem> orderItemConfiguration)
         {
+            orderItemConfiguration.ToTable("OrderItems");
+
             orderItemConfiguration
             .HasKey(x => x.Id);
 
@@ -17,6 +19,8 @@ namespace OrderWebAPI.Contexts
 
             orderItemConfiguration
             .Ignore(x => x.DomainEvents);
+
+            orderItemConfiguration.Property<int>("OrderId").IsRequired();
         }
     }
 }

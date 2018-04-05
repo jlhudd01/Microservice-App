@@ -34,7 +34,8 @@ namespace OrderWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<OrderContext>(opt => opt.UseInMemoryDatabase("OrderList"));
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<OrderContext>(opt => opt.UseSqlite("DataSource=database.db"));
             services.AddMvc();
             services.AddCors(options =>
             {
@@ -108,6 +109,12 @@ namespace OrderWebAPI
 
         private static void SeedDatabase(OrderContext context)
         {
+            context.Database.ExecuteSqlCommand("DELETE FROM [Orders]");
+            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='Orders'");
+            context.Database.ExecuteSqlCommand("DELETE FROM [OrderItems]");
+            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='OrderItems'");
+            context.SaveChanges();
+
             var orderItem1 = new OrderItem(
                     1,
                     "Product 1",

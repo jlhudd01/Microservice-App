@@ -8,6 +8,8 @@ namespace OrderWebAPI.Contexts
     {
         public void Configure(EntityTypeBuilder<Order> orderConfiguration)
         {
+            orderConfiguration.ToTable("Orders");
+            
              orderConfiguration
             .HasKey(x => x.Id);
 
