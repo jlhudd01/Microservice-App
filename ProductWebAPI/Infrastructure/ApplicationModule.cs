@@ -13,6 +13,10 @@ namespace ProductWebAPI.Infrastructure
             .As<IProductRepository>()
             .InstancePerLifetimeScope();
 
+            builder.RegisterType<RequestManager>()
+                .As<IRequestManager>()
+                .InstancePerLifetimeScope();
+
             // builder.RegisterAssemblyTypes(typeof(CreateProductCommandHandler).GetTypeInfo().Assembly)
             //     .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
         }        

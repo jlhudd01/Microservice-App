@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using ProductWebAPI.Infrastructure;
 using ProductWebAPI.Models;
 using ProductWebAPI.Repositories;
 
@@ -24,6 +25,16 @@ namespace ProductWebAPI.Commands
             _productRepository.Add(product);
 
             return await _productRepository.UnitOfWork.SaveEntitiesAsync();
+        }
+    }
+
+    public class CreateProductIdentifiedCommandHandler : IdentifiedCommandHandler<CreateProductCommand, bool>
+    {
+        public CreateProductIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager) { }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;
         }
     }
 }

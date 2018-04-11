@@ -7,6 +7,7 @@ import { MatTabsModule, MatCardModule, MatInputModule, MatFormFieldModule, MatBu
 import { AppRoutingModule } from './app-routing.module';
 import { ProductModule } from './Product/product.module';
 import { OrderModule } from './Order/order.module';
+import { SharedModule } from './Shared/shared.module';
 
 import { AppComponent } from './app.component';
 
@@ -26,7 +27,8 @@ import { AppComponent } from './app.component';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    MatButtonModule
+    MatButtonModule, 
+    SharedModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

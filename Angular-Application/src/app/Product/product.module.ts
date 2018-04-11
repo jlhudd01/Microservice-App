@@ -5,9 +5,10 @@ import { MatCardModule, MatInputModule, MatFormFieldModule, MatButtonModule } fr
 
 import { ProductComponent } from './product.component';
 import { ProductService } from './product.service';
+import { SharedModule } from '../Shared/shared.module';
 
 @NgModule({
-    imports: [ BrowserModule, FormsModule, MatCardModule, MatInputModule, MatFormFieldModule, MatButtonModule ],
+    imports: [ BrowserModule, FormsModule, MatCardModule, MatInputModule, MatFormFieldModule, MatButtonModule, SharedModule ],
     declarations: [ ProductComponent ],
     providers: [ ProductService ]
 })

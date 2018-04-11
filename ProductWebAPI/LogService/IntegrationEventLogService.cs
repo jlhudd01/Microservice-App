@@ -27,27 +27,35 @@ namespace ProductWebAPI.LogService
 
         public Task MarkEventAsPublishedAsync(IntegrationEvent @event)
         {
-            var eventLogEntry = _integrationEventLogContext.IntegrationEventLogs.Single(e => e.ID == @event.ID);
-            eventLogEntry.TimesSent++;
-            eventLogEntry.State = EventStateEnum.Published;
+            try
+            {
+                _integrationEventLogContext.Database.UseTransaction(null);
+                var eventLogEntry = _integrationEventLogContext.IntegrationEventLogs.Single(e => e.ID == @event.ID.ToString());
 
-            _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
+                eventLogEntry.TimesSent++;
+                eventLogEntry.State = EventStateEnum.Published;
 
-            return _integrationEventLogContext.SaveChangesAsync();
+                _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
+
+                return _integrationEventLogContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
         public Task SaveEventAsync(IntegrationEvent @event, DbTransaction transaction)
         {
+            if (transaction == null)
+            {
+                Console.WriteLine("null transaction");
+            }
             var eventLogEntry = new IntegrationEventLogEntry(@event);
 
-            try
-            {
-                _integrationEventLogContext.Database.UseTransaction(transaction);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+            _integrationEventLogContext.Database.UseTransaction(transaction);
+
             _integrationEventLogContext.IntegrationEventLogs.Add(eventLogEntry);
 
             return _integrationEventLogContext.SaveChangesAsync();

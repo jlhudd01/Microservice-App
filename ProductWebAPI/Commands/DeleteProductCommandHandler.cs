@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using ProductWebAPI.Infrastructure;
 using ProductWebAPI.Models;
 using ProductWebAPI.Repositories;
 
@@ -25,6 +26,16 @@ namespace ProductWebAPI.Commands
             _productRepository.Delete(product);
 
             return await _productRepository.UnitOfWork.SaveEntitiesAsync();
+        }
+    }
+
+    public class DeleteProductIdentifiedCommandHandler : IdentifiedCommandHandler<DeleteProductCommand, bool>
+    {
+        public DeleteProductIdentifiedCommandHandler(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager) { }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;
         }
     }
 }

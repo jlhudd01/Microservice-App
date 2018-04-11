@@ -36,8 +36,7 @@ namespace ProductWebAPI
         {
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<ProductContext>(opt => opt.UseSqlite("DataSource=database.db"), ServiceLifetime.Scoped);
-                services.AddEntityFrameworkSqlite()
-                .AddDbContext<IntegrationEventLogContext>(opt => opt.UseSqlite("DataSource=database.db"), ServiceLifetime.Scoped);
+            services.AddDbContext<IntegrationEventLogContext>(opt => opt.UseSqlite("DataSource=database.db"));
             services.AddMvc();
             services.AddCors(options =>
             {

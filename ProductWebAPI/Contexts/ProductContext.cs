@@ -29,6 +29,8 @@ namespace ProductWebAPI.Contexts
             modelBuilder.Entity<Product>()
             .Property(x => x.Id)
             .ValueGeneratedOnAdd();
+
+            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))

@@ -5,9 +5,10 @@ import { MatCardModule, MatButtonModule } from '@angular/material';
 
 import { OrderComponent } from './order.component';
 import { OrderService } from './order.service';
+import { SharedModule } from '../Shared/shared.module';
 
 @NgModule({
-    imports: [ BrowserModule, FormsModule, MatCardModule, MatButtonModule ],
+    imports: [ BrowserModule, FormsModule, MatCardModule, MatButtonModule, SharedModule ],
     declarations: [ OrderComponent ],
     providers: [ OrderService ]
 })

@@ -6,16 +6,17 @@ namespace ProductWebAPI.Models
 {
     public class IntegrationEventLogEntry
     {
+        public IntegrationEventLogEntry() { }
         public IntegrationEventLogEntry(IntegrationEvent evt)
         {
-            ID = evt.ID;
+            ID = evt.ID.ToString();
             CreationDate = evt.CreationDate;
             State = EventStateEnum.NotPublished;
             TimesSent = 0;
             Content = JsonConvert.SerializeObject(evt);
         }
 
-        public Guid ID { get; private set; }
+        public string ID { get; private set; }
         public DateTime CreationDate { get; private set; }
         public EventStateEnum State {get; set; }
         public int TimesSent { get; set; }

@@ -20,6 +20,10 @@ namespace ProductWebAPI.Contexts
             builder.ToTable("IntegrationEventLog");
 
             builder.HasKey(e => e.ID);
+            builder.Property(x => x.CreationDate).IsRequired();
+            builder.Property(x => x.State).IsRequired();
+            builder.Property(x => x.TimesSent).IsRequired();
+            builder.Property(x => x.Content).IsRequired();
         }
     }
 }

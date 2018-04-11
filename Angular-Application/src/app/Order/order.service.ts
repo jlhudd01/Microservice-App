@@ -6,18 +6,19 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { IOrder } from '../Models/order.model';
-import {RemoveProductFromOrder } from '../Models/removeproductfromorder.model'
+import { RemoveProductFromOrder } from '../Models/removeproductfromorder.model';
+import { DataService }  from '../Shared/data.service';
 
 @Injectable()
 export class OrderService {
     private orderUrl: string = '';
 
-    constructor(private _http: HttpClient){
+    constructor(private data: DataService){
         this.orderUrl = 'http://localhost:5050/api/order/';
     }
 
     getOrders() : Observable<IOrder[]> {
-        return this._http.get<IOrder[]>(this.orderUrl + 'orders');
+        return this.data.get<IOrder[]>(this.orderUrl + 'orders');
     }
 
     // createProduct(product) {
@@ -31,7 +32,7 @@ export class OrderService {
     // }
         
     removeFromOrder(order, orderitem) {
-        return this._http.post(this.orderUrl + 'Delete', new RemoveProductFromOrder(order, orderitem));
+        return this.data.post(this.orderUrl + 'Delete', new RemoveProductFromOrder(order, orderitem));
     }
 
     private handleError(error: any) {

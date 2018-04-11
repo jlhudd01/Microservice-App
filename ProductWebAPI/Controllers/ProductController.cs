@@ -57,33 +57,51 @@ namespace ProductWebAPI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> PostProduct([FromBody]CreateProductCommand command)
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> PostProduct([FromBody]CreateProductCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            await _mediator.Send(command);
+            bool result = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var createProductCommand = new IdentifiedCommand<CreateProductCommand, bool>(command, guid);
+                result = await _mediator.Send(createProductCommand);
+            }
 
-            return Created("http://localhost:5000/Product/PostProduct", command);
+            return result ? (IActionResult)Ok() : (IActionResult)BadRequest();
         }
 
         [HttpPut]
         [Route("[action]")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Put([FromBody]UpdateProductCommand command)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Put([FromBody]UpdateProductCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            await _mediator.Send(command);
+            bool result = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var updateProductCommand = new IdentifiedCommand<UpdateProductCommand, bool>(command, guid);
+                result = await _mediator.Send(updateProductCommand);
+            }
 
-            return Ok();
+            return result ? (IActionResult)Ok() : (IActionResult)BadRequest();
         }
 
         // DELETE api/values/5
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Delete([FromBody]DeleteProductCommand command)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Delete([FromBody]DeleteProductCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            await _mediator.Send(command);
+            bool result = false;
+            if (Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var deleteProductCommand = new IdentifiedCommand<DeleteProductCommand, bool>(command, guid);
+                result = await _mediator.Send(deleteProductCommand);
+            }
 
-            return Ok();
+            return result ? (IActionResult)Ok() : (IActionResult)BadRequest();
         }
     }
 }

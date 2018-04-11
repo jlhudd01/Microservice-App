@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { IProduct } from '../Models/product.model';
+import { DataService }  from '../Shared/data.service';
 // const httpOptions = {
 //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 // };
@@ -14,24 +15,24 @@ import { IProduct } from '../Models/product.model';
 export class ProductService {
     private productUrl: string = '';
 
-    constructor(private _http: HttpClient){
+    constructor(private data: DataService){
         this.productUrl = 'http://localhost:5000/api/product/';
     }
 
     getProducts() : Observable<IProduct[]> {
-        return this._http.get<IProduct[]>(this.productUrl + 'products');
+        return this.data.get<IProduct[]>(this.productUrl + 'products');
     }
 
     createProduct(product) {
-        return this._http.post(this.productUrl + 'PostProduct', product);
+        return this.data.post(this.productUrl + 'PostProduct', product);
     }
 
     updateProduct(product) {
-        return this._http.put(this.productUrl + 'Put', product);
+        return this.data.put(this.productUrl + 'Put', product);
     }
         
     deleteProduct(product) {
-        return this._http.post(this.productUrl + 'Delete', product);
+        return this.data.post(this.productUrl + 'Delete', product);
     }
 
     private handleError(error: any) {

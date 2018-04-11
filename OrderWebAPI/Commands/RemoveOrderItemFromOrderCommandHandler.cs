@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using OrderWebAPI.Infrastructure;
 using OrderWebAPI.Repositories;
 
 namespace OrderWebAPI.Commands
@@ -25,6 +26,16 @@ namespace OrderWebAPI.Commands
             orderToUpdate.RemoveOrderItem(orderItem);
 
             return await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+        }
+    }
+
+    public class RemoveOrderItemFromOrderIdentifiedCommandHanlder : IdentifiedCommandHandler<RemoveOrderItemFromOrderCommand, bool>
+    {
+        public RemoveOrderItemFromOrderIdentifiedCommandHanlder(IMediator mediator, IRequestManager requestManager) : base(mediator, requestManager) { }
+
+        protected override bool CreateResultForDuplicateRequest()
+        {
+            return true;
         }
     }
 }

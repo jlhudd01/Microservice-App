@@ -39,11 +39,17 @@ namespace OrderWebAPI.Controllers
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public IActionResult Delete([FromBody]RemoveOrderItemFromOrderCommand command)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Delete([FromBody]RemoveOrderItemFromOrderCommand command, [FromHeader(Name = "x-requestid")] string requestId)
         {
-            _mediator.Send(command);
+            bool result = false;
+            if(Guid.TryParse(requestId, out Guid guid) && guid != Guid.Empty)
+            {
+                var removeOrderItemFromOrderCommand = new IdentifiedCommand<RemoveOrderItemFromOrderCommand, bool>(command, guid);
+                result = await _mediator.Send(removeOrderItemFromOrderCommand);
+            }
 
-            return Ok();
+            return result ? (IActionResult)Ok() : (IActionResult)BadRequest();
         }
     }
 }

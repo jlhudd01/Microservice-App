@@ -13,6 +13,10 @@ namespace OrderWebAPI.Infrastructure
             .As<IOrderRepository>()
             .InstancePerLifetimeScope();
 
+            builder.RegisterType<RequestManager>()
+                .As<IRequestManager>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterAssemblyTypes(typeof(ProductUpdateIntegrationEventHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
         } 

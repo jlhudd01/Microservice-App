@@ -15,6 +15,7 @@ namespace OrderWebAPI.Infrastructure
 
             builder.RegisterAssemblyTypes(typeof(RemoveOrderItemFromOrderCommand).GetTypeInfo().Assembly)
             .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
             //need this for mediator.send (command handler)
             builder.Register<SingleInstanceFactory>(context =>
             {
