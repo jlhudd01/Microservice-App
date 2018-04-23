@@ -34,7 +34,7 @@ export class OrderComponent implements OnInit {
     removeFromOrder(order, orderItem) {
         if (confirm('Are you sure you want to remove this item from your order?')) {
             this.error = false;
-            this._service.removeFromOrder(order, null).subscribe(
+            this._service.removeFromOrder(order, orderItem).subscribe(
                 data => {
                     this.getOrders();
                 },
