@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 export class OrderComponent implements OnInit {
     subTitle: string;
     orders: IOrder[];
+    error: boolean;
 
     constructor(private _service: OrderService) {
         this.getOrders();
@@ -22,6 +23,7 @@ export class OrderComponent implements OnInit {
     }
 
     getOrders() {
+        this.error = false;
         this._service.getOrders().subscribe(
             orders => this.orders = orders,
             err => this.handleError(err),
@@ -31,7 +33,8 @@ export class OrderComponent implements OnInit {
 
     removeFromOrder(order, orderItem) {
         if (confirm('Are you sure you want to remove this item from your order?')) {
-            this._service.removeFromOrder(order, orderItem).subscribe(
+            this.error = false;
+            this._service.removeFromOrder(order, null).subscribe(
                 data => {
                     this.getOrders();
                 },
@@ -42,6 +45,7 @@ export class OrderComponent implements OnInit {
     }
 
     private handleError(error: any) {
+        this.error = true;
         return Observable.throw(error);
     } 
 }

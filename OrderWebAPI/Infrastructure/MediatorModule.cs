@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
+using FluentValidation;
 using MediatR;
 using OrderWebAPI.Commands;
+using OrderWebAPI.Commands.Validators;
 
 namespace OrderWebAPI.Infrastructure
 {
@@ -15,6 +17,10 @@ namespace OrderWebAPI.Infrastructure
 
             builder.RegisterAssemblyTypes(typeof(RemoveOrderItemFromOrderCommand).GetTypeInfo().Assembly)
             .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder.RegisterAssemblyTypes(typeof(RemoveOrderItemFromOrderCommandValidator).GetTypeInfo().Assembly)
+            .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+            .AsImplementedInterfaces();
 
             //need this for mediator.send (command handler)
             builder.Register<SingleInstanceFactory>(context =>
@@ -32,6 +38,8 @@ namespace OrderWebAPI.Infrastructure
                     return (IEnumerable<object>)componentContext.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
                 };
             });
+
+            builder.RegisterGeneric(typeof(ValidatorFactory<,>)).As(typeof(IPipelineBehavior<,>));
         }
     }
 }

@@ -1,5 +1,6 @@
 <h2>{{ subTitle }}</h2>
 <div class="container">
+    <div class="alert alert-warning" role="alert" [hidden]="!error">Error validating</div>
     <mat-card *ngFor="let order of orders">
         <div *ngIf="order?.orderItems.length > 0">
             <mat-card-title>{{ order.id }}</mat-card-title>

@@ -19,6 +19,7 @@ using OrderWebAPI.IntegrationEvents.EventHandlers;
 using OrderWebAPI.IntegrationEvents.Events;
 using OrderWebAPI.RabbitMQ;
 using RabbitMQ.Client;
+using OrderWebAPI.ErrorHandling;
 
 namespace OrderWebAPI
 {
@@ -34,6 +35,11 @@ namespace OrderWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            });
+
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<OrderContext>(opt => opt.UseSqlite("DataSource=database.db"));
             services.AddMvc();
