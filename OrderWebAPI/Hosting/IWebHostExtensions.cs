@@ -21,10 +21,10 @@ namespace OrderWebAPI.Hosting
                 {
                     var retry = Policy.Handle<SqlException>()
                         .WaitAndRetry(new TimeSpan[]{
-                            TimeSpan.FromSeconds(5),
                             TimeSpan.FromSeconds(10),
-                            TimeSpan.FromSeconds(15),
-                            TimeSpan.FromSeconds(20)
+                            TimeSpan.FromSeconds(20),
+                            TimeSpan.FromSeconds(40),
+                            TimeSpan.FromSeconds(80)
                         });
 
                     retry.Execute(() =>
