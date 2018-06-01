@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+
+        product.api:
+                environment:
+                        - ASPNETCORE_ENVIRONMENT=Development
+                        - ASPNETCORE_URLS=http://0.0.0.0:80
+                        - ConnectionString=Server=sql.data;Database=Angular.Application.ProductDb;User Id=sa;Password=MyStrongPassw0rd
+                        - EventBusConnection=rabbitmq
+                        - EventBusUser=users
+                        - EventBusPassword=users
+
+                ports:
+                        - "5000:80"
+
+        order.api:
+                environment:
+                        - ASPNETCORE_ENVIRONMENT=Development
+                        - ASPNETCORE_URLS=http://0.0.0.0:80
+                        - ConnectionString=Server=sql.data;Database=Angular.Application.OrderDb;User Id=sa;Password=MyStrongPassw0rd
+                        - EventBusConnection=rabbitmq
+                        - EventBusUser=users
+                        - EventBusPassword=users
+
+                ports:
+                        - "5050:80"        
+
+        webspa:
+                environment:
+                        - ASPNETCORE_ENVIRONMENT=Development
+                        - ASPNETCORE_URLS=http://0.0.0.0:80
+
+                ports:
+                        - "4200:80"
+
+        sql.data:
+                environment:
+                        - SA_PASSWORD=MyStrongPassw0rd
+                        - ACCEPT_EULA=Y
+                ports:
+                        - "5433:1433"
+
+        rabbitmq:
+                environment:
+                        RABBITMQ_DEFAULT_USER: "users"
+                        RABBITMQ_DEFAULT_PASS: "users"
+                ports:
+                        - "15672:15672"
+                        - "5672:5672"
+

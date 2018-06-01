@@ -18,3 +18,4 @@
 /home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.AssemblyInfo.cs
 /home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.dll
 /home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.pdb
+/home/jarriott/Documents/Microservice app/OrderWebAPI/obj/Debug/netcoreapp2.0/OrderWebAPI.csprojResolveAssemblyReference.cache

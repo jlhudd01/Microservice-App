@@ -24,7 +24,7 @@ namespace ProductWebAPI.IntegrationEvents
             _integrationEventLogService = _integrationEventLogServiceFactory(_productContext.Database.GetDbConnection());
             
         }
-        public async Task PublishThroughEventBus(IntegrationEvent integrationEvent)
+        public async Task PublishThroughEventBusAsync(IntegrationEvent integrationEvent)
         {
             await SaveEventAndOrderingContextChangesAsync(integrationEvent);
             _eventBus.Publish(integrationEvent);

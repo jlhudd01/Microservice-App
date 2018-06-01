@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using OrderWebAPI.Models;
 using OrderWebAPI.Repositories;
 
@@ -41,4 +42,15 @@ namespace OrderWebAPI.Contexts
         public DbSet<Order> Orders { get; set;}
         public DbSet<OrderItem> OrderItems { get; set;}
     }
+
+    // public class OrderContextDbFactory : IDesignTimeDbContextFactory<OrderContext>
+    // {
+    //     public OrderContext CreateDbContext(string[] args)
+    //     {
+    //         var optionsBuilder = new DbContextOptionsBuilder<OrderContext>()
+    //             .UseSqlServer("Server=.;Initial Catalog=Angular.Application.OrderDb;Integrated Security=true");
+
+    //         return new OrderContext(optionsBuilder.Options, new Mediator());
+    //     }
+    // }
 }

@@ -20,7 +20,7 @@ namespace ProductWebAPI.LogService
             _dbConnection = dbConnection;
             _integrationEventLogContext = new IntegrationEventLogContext(
                 new DbContextOptionsBuilder<IntegrationEventLogContext>()
-                .UseSqlite(_dbConnection)
+                .UseSqlServer(_dbConnection)
                 .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                 .Options);
         }
@@ -29,7 +29,6 @@ namespace ProductWebAPI.LogService
         {
             try
             {
-                _integrationEventLogContext.Database.UseTransaction(null);
                 var eventLogEntry = _integrationEventLogContext.IntegrationEventLogs.Single(e => e.ID == @event.ID.ToString());
 
                 eventLogEntry.TimesSent++;

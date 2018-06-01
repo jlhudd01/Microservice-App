@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+
+        product.api:
+                image: product.api:${TAG:-latest}
+                build:
+                        context: ProductWebAPI
+                        dockerfile: Dockerfile
+                depends_on:
+                        - sql.data
+                        - rabbitmq
+
+        order.api:
+                image: order.api:${TAG:-latest}
+                build:
+                        context: OrderWebAPI
+                        dockerfile: Dockerfile
+                depends_on:
+                        - sql.data
+                        - rabbitmq
+
+        webspa:
+                image: webspa:${TAG:-latest}
+                build:
+                        context: WebSPA
+                        dockerfile: Dockerfile
+                depends_on:
+                        - product.api
+                        - order.api
+
+        sql.data:
+                image: microsoft/mssql-server-linux:2017-latest
+
+        rabbitmq:
+                image: rabbitmq:3-management-alpine
+

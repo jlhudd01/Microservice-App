@@ -15,12 +15,10 @@ namespace ProductWebAPI.DomainEventHandlers
             _productsIntegrationService = productsIntegrationEventService;
         }
 
-        public Task Handle(ProductDeleteDomainEvent productDeleteDomainEvent, CancellationToken cancellationToken)
+        public async Task Handle(ProductDeleteDomainEvent productDeleteDomainEvent, CancellationToken cancellationToken)
         {
             var productUpdateIntegrationEvent = new ProductDeleteIntegrationEvent(productDeleteDomainEvent.Product);
-            _productsIntegrationService.PublishThroughEventBus(productUpdateIntegrationEvent);
-
-            return Task.CompletedTask;
+            await _productsIntegrationService.PublishThroughEventBusAsync(productUpdateIntegrationEvent);
         }
     }
 }

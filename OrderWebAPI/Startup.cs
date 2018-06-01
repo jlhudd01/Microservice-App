@@ -20,6 +20,7 @@ using OrderWebAPI.IntegrationEvents.Events;
 using OrderWebAPI.RabbitMQ;
 using RabbitMQ.Client;
 using OrderWebAPI.ErrorHandling;
+using System.Reflection;
 
 namespace OrderWebAPI
 {
@@ -40,8 +41,18 @@ namespace OrderWebAPI
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter));
             });
 
-            services.AddEntityFrameworkSqlite()
-                .AddDbContext<OrderContext>(opt => opt.UseSqlite("DataSource=database.db"));
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<OrderContext>(options => 
+                {
+                     options.UseSqlServer(Configuration["ConnectionString"],
+                     sqlServerOptionsAction: sqlOptions => 
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+                    });
+                 },
+                ServiceLifetime.Scoped);
+
             services.AddMvc();
             services.AddCors(options =>
             {
@@ -51,14 +62,16 @@ namespace OrderWebAPI
                     .AllowAnyHeader());
             });
 
+            services.Configure<OrderSettings>(Configuration);
+
             services.AddTransient<IOrdersIntegrationEventService, OrdersIntegrationEventService>();
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var factory = new ConnectionFactory();
-                factory.HostName = "localhost";
-                factory.UserName = "users";
-                factory.Password = "users";
+                factory.HostName = Configuration["EventBusConnection"];
+                factory.UserName = Configuration["EventBusUser"];
+                factory.Password = Configuration["EventBusPassword"];
 
                 return new DefaultRabbitMQPersistentConnection(factory, 5);
             });
@@ -82,9 +95,6 @@ namespace OrderWebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            var context = app.ApplicationServices.GetService<OrderContext>();
-            SeedDatabase(context);
 
             app.UseCors("CorsPolicy");
             app.UseMvc();
@@ -111,55 +121,6 @@ namespace OrderWebAPI
             });
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }
-
-        private static void SeedDatabase(OrderContext context)
-        {
-            context.Database.ExecuteSqlCommand("DELETE FROM [Orders]");
-            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='Orders'");
-            context.Database.ExecuteSqlCommand("DELETE FROM [OrderItems]");
-            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='OrderItems'");
-            context.SaveChanges();
-
-            var orderItem1 = new OrderItem(
-                    1,
-                    "Product 1",
-                    1.03m
-                );
-            var orderItem2 = new OrderItem(
-                    2,
-                    "Product 2",
-                    2.03m
-            );
-            var orderItem3 = new OrderItem(
-                    3,
-                    "Product 3",
-                    3.03m
-            );
-            var orderItem4 = new OrderItem(
-                    1,
-                    "Product 1",
-                    1.03m
-                );
-            var order1 = new Order(new List<OrderItem>()
-                        {
-                            orderItem1,
-                            orderItem2
-                        });
-            var order2 = new Order(new List<OrderItem>()
-                        {
-                            orderItem3,
-                            orderItem4
-                        });
-            var orders = new List<Order>()
-                {
-                    order1,
-                    order2
-                };
-
-            context.Orders.AddRange(orders);
-
-            context.SaveChanges();
         }
     }
 }

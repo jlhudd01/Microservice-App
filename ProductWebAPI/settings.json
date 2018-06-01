@@ -1,0 +1,9 @@
+{
+    "UseCustomiztionData": false,
+    "ConnectionString" : "Server=172.17.0.3,1433;Database=Angular.Application.ProductDb;User Id=sa;Password=MyStrongPassw0rd",
+    "GracePeriodTime" : "1",
+    "CheckUpdateTime" : "30000",
+    "EventBusConnection" : "172.17.0.2",
+    "EventBusUser" : "users",
+    "EventBusPassword" : "users"
+}

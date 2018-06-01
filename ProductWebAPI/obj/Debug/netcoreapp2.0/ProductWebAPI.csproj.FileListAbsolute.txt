@@ -18,3 +18,4 @@
 /home/jarriott/Documents/Microservice app/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.AssemblyInfo.cs
 /home/jarriott/Documents/Microservice app/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.dll
 /home/jarriott/Documents/Microservice app/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.pdb
+/home/jarriott/Documents/Microservice app/ProductWebAPI/obj/Debug/netcoreapp2.0/ProductWebAPI.csprojResolveAssemblyReference.cache

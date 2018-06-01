@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -34,9 +35,28 @@ namespace ProductWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlite()
-                .AddDbContext<ProductContext>(opt => opt.UseSqlite("DataSource=database.db"), ServiceLifetime.Scoped);
-            services.AddDbContext<IntegrationEventLogContext>(opt => opt.UseSqlite("DataSource=database.db"));
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<ProductContext>(options => 
+                {
+                     options.UseSqlServer(Configuration["ConnectionString"],
+                     sqlServerOptionsAction: sqlOptions => 
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+                    });
+                 },
+                ServiceLifetime.Scoped);
+
+            services.AddDbContext<IntegrationEventLogContext>(options => 
+                {
+                     options.UseSqlServer(Configuration["ConnectionString"],
+                     sqlServerOptionsAction: sqlOptions => 
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+                    });
+                 });
+
             services.AddMvc();
             services.AddCors(options =>
             {
@@ -53,9 +73,9 @@ namespace ProductWebAPI
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
                 var factory = new ConnectionFactory();
-                factory.HostName = "localhost";
-                factory.UserName = "users";
-                factory.Password = "users";
+                factory.HostName = Configuration["EventBusConnection"];
+                factory.UserName = Configuration["EventBusUser"];
+                factory.Password = Configuration["EventBusPassword"];
 
                 return new DefaultRabbitMQPersistentConnection(factory, 5);
             });
@@ -79,11 +99,6 @@ namespace ProductWebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            var context = app.ApplicationServices.GetService<ProductContext>();
-            var context2 = app.ApplicationServices.GetService<IntegrationEventLogContext>();
-            SeedProductDatabase(context);
-            DeleteEventLogDatabase(context2);
 
             app.UseCors("CorsPolicy");
             app.UseMvc();
@@ -109,28 +124,6 @@ namespace ProductWebAPI
             });
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }
-
-        private static void SeedProductDatabase(ProductContext context)
-        {
-            context.Database.ExecuteSqlCommand("DELETE FROM [Products]");
-            context.Database.ExecuteSqlCommand("DELETE FROM SQLITE_SEQUENCE WHERE NAME='Products'");
-            context.SaveChanges();
-            var products = new List<Product>()
-            {
-                new Product("Product 1", 1.03m),
-                new Product("Product 2", 2.03m),
-                new Product("Product 3", 3.03m)
-            };
-            context.Products.AddRange(products);
-
-            context.SaveChanges();
-        }
-
-        private static void DeleteEventLogDatabase(IntegrationEventLogContext context)
-        {
-            context.Database.ExecuteSqlCommand("DELETE FROM [IntegrationEventLog]");
-            context.SaveChanges();
         }
     }
 }
